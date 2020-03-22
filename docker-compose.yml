@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    image: postgis/postgis
+    # okay for local dev
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+  app:
+    build: .
+    volumes:
+      - .:/app
+    # host machine :6060 -> container port 8080 (NGINX) -> uwsgi app
+    ports:
+      - "6060:8080"
+    depends_on:
+     - db

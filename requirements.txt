@@ -1,0 +1,4 @@
+uwsgi>=2.0.18
+psycopg2>=2.7,<3.0
+Django>=2.0,<3.0
+#djangorestframework

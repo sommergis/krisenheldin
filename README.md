@@ -8,10 +8,12 @@ docker-compose build && docker-compose up
 ```sh
 # Install django locally for init of start project
 # may be removed afterwards
-conda create -n django python=3.6
+conda create -n django python=3.7
 source activate django
-conda install django
+conda install django psycopg2 gdal
 django-admin startproject app
+cd app
+python manage.py startapp api
 ```
 
 ## Settings

@@ -1,0 +1,843 @@
+openapi: 3.0.0
+info:
+  title: krisenheld:in-API
+  description: API of the krisenheld:in Plattform.
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/krisenheldin/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /employer:
+    get:
+      summary: Returns a list of employers.
+      operationId: employer_get
+      responses:
+        "200":
+          description: A JSON array of employers
+      x-openapi-router-controller: api.controllers.default_controller
+    post:
+      summary: Creates a new employer
+      operationId: employer_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employer'
+        required: true
+      responses:
+        "201":
+          description: Created
+      x-openapi-router-controller: api.controllers.default_controller
+  /employer/{employerId}:
+    get:
+      summary: Returns an employer by ID.
+      operationId: employer_employer_id_get
+      parameters:
+      - name: employerId
+        in: path
+        description: The ID of the employer to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: An employer object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employer'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    put:
+      summary: Update changes to employer
+      operationId: employer_employer_id_put
+      parameters:
+      - name: employerId
+        in: path
+        description: The ID of the employer to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: An employer object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employer'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    delete:
+      summary: deletes an employer profile. Admin only
+      operationId: employer_employer_id_delete
+      parameters:
+      - name: employerId
+        in: path
+        description: The ID of the employer to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: employer successfully deleted
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+  /employee:
+    get:
+      summary: Returns a list of employees.
+      operationId: employee_get
+      responses:
+        "200":
+          description: A JSON array of employees
+      x-openapi-router-controller: api.controllers.default_controller
+    post:
+      summary: Creates a new employee
+      operationId: employee_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employer'
+        required: true
+      responses:
+        "201":
+          description: Created
+      x-openapi-router-controller: api.controllers.default_controller
+  /employees/{employeeId}:
+    get:
+      summary: Returns an employee by ID.
+      operationId: employees_employee_id_get
+      parameters:
+      - name: employeeId
+        in: path
+        description: The ID of the employee to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: An employer object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    put:
+      summary: Update changes to employer
+      operationId: employees_employee_id_put
+      parameters:
+      - name: employeeId
+        in: path
+        description: The ID of the employee to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: An employee object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    delete:
+      summary: deletes an employee profile. Admin only
+      operationId: employees_employee_id_delete
+      parameters:
+      - name: employeeId
+        in: path
+        description: The ID of the employee to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: employer successfully deleted
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+  /jobs:
+    get:
+      summary: Returns a list of available jobs.
+      operationId: jobs_get
+      responses:
+        "200":
+          description: A JSON array of jobs
+      x-openapi-router-controller: api.controllers.default_controller
+    post:
+      summary: Creates a new job
+      operationId: jobs_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/job'
+        required: true
+      responses:
+        "201":
+          description: Created
+      x-openapi-router-controller: api.controllers.default_controller
+  /jobs/{jobId}:
+    get:
+      summary: Returns a job.
+      operationId: jobs_job_id_get
+      parameters:
+      - name: jobId
+        in: path
+        description: The ID of the job to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: A job object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/job'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    put:
+      summary: Update changes to job
+      operationId: jobs_job_id_put
+      parameters:
+      - name: jobId
+        in: path
+        description: The ID of the job to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: A job object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/job'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    delete:
+      summary: deletes a job
+      operationId: jobs_job_id_delete
+      parameters:
+      - name: jobId
+        in: path
+        description: The ID of the job to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: job successfully deleted
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+  /jobs/{jobId}/pictures:
+    get:
+      summary: Returns a list of pictures for the specified job.
+      operationId: jobs_job_id_pictures_get
+      parameters:
+      - name: jobId
+        in: path
+        description: The ID of the job
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: A list of pictures for the specified job
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/picture'
+                x-content-type: application/json
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    post:
+      summary: Creates a new picture
+      operationId: jobs_job_id_pictures_post
+      parameters:
+        - name: jobId
+          in: path
+          description: The ID of the job
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minimum: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/picture'
+        required: true
+      responses:
+        "201":
+          description: Created
+      x-openapi-router-controller: api.controllers.default_controller
+  /jobs/{jobId}/pictures/{pictureId}:
+    get:
+      summary: gets a picture
+      operationId: jobs_job_id_pictures_picture_id_get
+      parameters:
+      - name: jobId
+        in: path
+        description: The ID of the job to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      - name: pictureId
+        in: path
+        description: The ID of the picture to show.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: job successfully deleted
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+    delete:
+      summary: deletes a picture
+      operationId: jobs_job_id_pictures_picture_id_delete
+      parameters:
+      - name: jobId
+        in: path
+        description: The ID of the job to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      - name: pictureId
+        in: path
+        description: The ID of the picture to delete.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: job successfully deleted
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+  /applications:
+    post:
+      summary: Creates a new application
+      operationId: applications_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/jobApplication'
+        required: true
+      responses:
+        "201":
+          description: Created
+      x-openapi-router-controller: api.controllers.default_controller
+  /applications/{applicationId}:
+    get:
+      summary: Returns an application.
+      operationId: applications_application_id_get
+      parameters:
+      - name: applicationId
+        in: path
+        description: The ID of the application to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: An application object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jobApplication'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    put:
+      summary: Update changes to application
+      operationId: applications_application_id_put
+      parameters:
+      - name: applicationId
+        in: path
+        description: The ID of the application to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: An application object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/jobApplication'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    delete:
+      summary: deletes an application
+      operationId: applications_application_id_delete
+      parameters:
+      - name: applicationId
+        in: path
+        description: The ID of the application to return.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: string
+      responses:
+        "200":
+          description: application successfully deleted
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+  /jobs_near:
+    get:
+      summary: Returns a list of jobs in the specified search area.
+      operationId: jobs_near_get
+      parameters:
+      - name: lat
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Latitude of search center
+      - name: lng
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Longitude of search center
+      - name: radius
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Radius of search
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          description: Maximum number of hits to be returned
+      responses:
+        "200":
+          description: A list of jobs in the search area. Ordered by distance
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/job'
+                x-content-type: application/json
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+  /contract/{contractId}:
+    get:
+      summary: Returns the specified contract of jobs in the specified search area.
+      operationId: contract_contract_id_get
+      parameters:
+      - name: contractId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Id of the contract to show
+      responses:
+        "200":
+          description: The specified contract
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/contract'
+                x-content-type: application/json
+        "404":
+          description: Throw 404 if resource was not found
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+  /login:
+    post:
+      summary: Userlogin, returns the users jwttoken for authentication. WARNING potentially
+        insecure, revision required
+      operationId: login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginCredentials'
+        required: true
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Bearer token containg userclaims. Needs revision!
+                x-content-type: application/json
+        "403":
+          description: Throw 403 if login failed
+        default:
+          description: Something went wrong
+      x-openapi-router-controller: api.controllers.default_controller
+components:
+  schemas:
+    employer:
+      type: object
+      properties:
+        id:
+          type: string
+          example: asd1234SAds
+        defaultPictureId:
+          type: string
+          example: asd1234SAds
+        firstName:
+          type: string
+          example: Holger
+        lastName:
+          type: string
+          example: Müller
+        street:
+          type: string
+          example: Feldstraße
+        houseNumber:
+          type: string
+          example: 135a
+        postalCode:
+          type: string
+          example: "12321"
+        city:
+          type: string
+          example: Schöndorf
+        state:
+          type: string
+          example: Nordrhein-Westfalen
+      example:
+        firstName: Holger
+        lastName: Müller
+        city: Schöndorf
+        street: Feldstraße
+        postalCode: "12321"
+        houseNumber: 135a
+        defaultPictureId: asd1234SAds
+        id: asd1234SAds
+        state: Nordrhein-Westfalen
+    employee:
+      type: object
+      properties:
+        id:
+          type: string
+          example: asd1234SAds
+        firstName:
+          type: string
+          example: Holger
+        lastName:
+          type: string
+          example: Müller
+        street:
+          type: string
+          example: Feldstraße
+        houseNumber:
+          type: string
+          example: 135a
+        postalCode:
+          type: string
+          example: "12321"
+        city:
+          type: string
+          example: Schöndorf
+        state:
+          type: string
+          example: Nordrhein-Westfalen
+      example:
+        firstName: Holger
+        lastName: Müller
+        city: Schöndorf
+        street: Feldstraße
+        postalCode: "12321"
+        houseNumber: 135a
+        id: asd1234SAds
+        state: Nordrhein-Westfalen
+    job:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 12ASD4231f
+        employerId:
+          type: string
+          example: 543ef2
+        defaultImagePictureId:
+          type: string
+          example: d23d23d
+        description:
+          type: string
+          example: Aushilfe bei der Belieferung von Lebensmittelhandel
+        salaryHourly:
+          type: number
+          example: 9.75
+        workHoursPerDay:
+          type: number
+          example: 8
+        workDaysPerWeek:
+          type: number
+          example: 5
+        accommodationAvailable:
+          type: boolean
+          example: true
+        acommodationCostPerDay:
+          type: number
+          example: 9.5
+        withMeals:
+          type: boolean
+          example: true
+        mealCostPerDay:
+          type: number
+          example: 5.5
+        spokenLanguages:
+          type: string
+          example: deutsch, english, polish
+        location:
+          $ref: '#/components/schemas/job_location'
+        locationDescription:
+          type: string
+          example: nahe Bad Wünnenberg
+        startDate:
+          type: string
+          example: 01.05.2020
+        endDate:
+          type: string
+          example: 30.05.2020
+        specialRequirements:
+          type: string
+          example: führerschein Kl. B
+        contingent:
+          type: number
+          example: 100
+        isActive:
+          type: boolean
+          example: true
+        visibleFrom:
+          type: string
+          example: 01.05.2020
+        visibleTo:
+          type: string
+          example: 30.05.2020
+      example:
+        acommodationCostPerDay: 9.5
+        endDate: 30.05.2020
+        locationDescription: nahe Bad Wünnenberg
+        accommodationAvailable: true
+        withMeals: true
+        description: Aushilfe bei der Belieferung von Lebensmittelhandel
+        contingent: 100
+        isActive: true
+        defaultImagePictureId: d23d23d
+        workHoursPerDay: 8
+        employerId: 543ef2
+        workDaysPerWeek: 5
+        spokenLanguages: deutsch, english, polish
+        location:
+          lng: 8.666
+          lat: 51.55133
+        visibleTo: 30.05.2020
+        id: 12ASD4231f
+        salaryHourly: 9.75
+        mealCostPerDay: 5.5
+        visibleFrom: 01.05.2020
+        startDate: 01.05.2020
+        specialRequirements: führerschein Kl. B
+    jobApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          example: asdf1234
+        jobId:
+          type: string
+          example: 123rv32
+        employeeId:
+          type: string
+          example: 231423456vxx
+        employeeStatus:
+          type: string
+          example: available
+        employerStatus:
+          type: string
+          example: available
+      example:
+        jobId: 123rv32
+        employerStatus: available
+        employeeId: 231423456vxx
+        id: asdf1234
+        employeeStatus: available
+    contract:
+      type: object
+      properties:
+        id:
+          type: string
+          example: asdf1234
+        jobApplicationId:
+          type: string
+          example: 123rv32
+        employerSigned:
+          type: string
+          example: 12.5.20
+        employeeSigned:
+          type: string
+          example: 12.5.20
+      example:
+        employerSigned: 12.5.20
+        jobApplicationId: 123rv32
+        id: asdf1234
+        employeeSigned: 12.5.20
+    address:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Feldstraße
+        houseNumber:
+          type: string
+          example: 75a
+        postalCode:
+          type: string
+          example: "64544"
+        state:
+          type: string
+          example: Nordrhein-Westfalen
+    document:
+      type: object
+      properties:
+        documentType:
+          type: string
+          example: media/pdf
+        path:
+          type: string
+          example: media.krisenheldinnen.de/employee_documents/164sc234d654.pdf
+    picture:
+      type: object
+      properties:
+        documentType:
+          type: string
+          example: image/jpeg
+        path:
+          type: string
+          example: media.krisenheldinnen.de/employer_pictures/qwre132410.pdf
+      example:
+        path: media.krisenheldinnen.de/employer_pictures/qwre132410.pdf
+        documentType: image/jpeg
+    loginCredentials:
+      type: object
+      properties:
+        email:
+          type: string
+          example: hansel@xx.de
+        password:
+          type: string
+          example: secure
+    job_location:
+      type: object
+      properties:
+        lat:
+          type: number
+          example: 51.55133
+        lng:
+          type: number
+          example: 8.666
+      example:
+        lng: 8.666
+        lat: 51.55133
+

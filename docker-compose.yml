@@ -2,16 +2,35 @@ version: '3'
 
 services:
   db:
-    image: postgis/postgis
-    # okay for local dev
+    image: postgis/postgis:9.6-2.5-alpine
+    restart: unless-stopped
+    #volumes:
+      #- ./db/V_01_create_all.sql:/docker-entrypoint-initdb.d/1_V_01_create_all.sql
+      #- ./db/sample_data.sql:/docker-entrypoint-initdb.d/2_sample_data.sql
     environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
-  app:
+      - POSTGRES_DB=krisenheldin
+      - POSTGRES_USER=krisenheldinapi
+      - POSTGRES_PASSWORD=verysecret
+      - POSTGRES_PORT=5432
+    ports:
+      - "5111:5432"
+
+  api:
     build: .
+    #image: krisenheldin:latest
     volumes:
       - .:/app
     # host machine :6060 -> container port 8080 (NGINX) -> uwsgi app
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=krisenheldin
+      - POSTGRES_USER=krisenheldinapi
+      - POSTGRES_PASSWORD=verysecret
+      - POSTGRES_PORT=5432
+    restart: always # important - otherwise sometimes api is up before DB
     ports:
       - "6060:8080"
     depends_on:
      - db
+    # populate test data
+    #command: bash -c "/usr/bin/env python3 api/init_database.py"

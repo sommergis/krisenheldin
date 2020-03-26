@@ -2,23 +2,31 @@
 
 ```sh
 docker-compose build && docker-compose up
+curl -X GET "http://localhost:6060/krisenheldin/1.0.0/employer" -H "accept: */*
 ```
-[Docker & Django](https://docs.docker.com/compose/django/)
 
-```sh
-# Install django locally for init of start project
-# may be removed afterwards
-conda create -n django python=3.7
-source activate django
-conda install django psycopg2 gdal
-django-admin startproject app
-cd app
-python manage.py startapp api
+should return
+
+```json
+[
+  {
+    "firstName": "Hans",
+    "houseNumber": "32a",
+    "id": 1,
+    "lastName": "Meister",
+    "postalCode": "85354",
+    "state": "Deutschland",
+    "street": "Hinterhof 32"
+  }
+]
 ```
+
+
+
 
 ## Settings
 
-- adjust django settings.py: SECRET_KEY, DATABASE, etc.
+- adjust SECRET_KEY, DATABASE, etc.
 
 # Google Cloud
 

@@ -194,13 +194,14 @@ def employer_get():  # noqa: E501
         print("employer_get()")
         emps = []
 
-        # Create the list of employers from our data; join with DBUser for first_name, last_name
+        # # Create the list of employers from our data; join with DBUser for first_name, last_name
+        # explicit join:
         for a, e, u in db.session.query(DBAddress, DBEmployer, DBUser) \
             .filter(DBAddress.Id==DBEmployer.AddressId) \
             .filter(DBUser.Id==DBEmployer.UserId) \
             .order_by(DBEmployer.Id) \
             .all():
-    
+
 
             # Serialize the data for the response
             # employer_schema = DBEmployerSchema(many=False)
@@ -214,8 +215,9 @@ def employer_get():  # noqa: E501
             # Construct Swagger model for Employer
             emps.append( Employer(id=e.Id, default_picture_id=None, first_name=u.FirstName, 
                                     last_name=u.LastName, street=a.Street, house_number=a.HouseNumber,
-                                    postal_code=a.PostalCode, city=None, state=a.State)
+                                    postal_code=a.PostalCode, city=a.City, state=a.State)
                         )
+
         return emps
         
     except Exception as ex:
@@ -245,7 +247,48 @@ def jobs_get():  # noqa: E501
 
     :rtype: None
     """
-    return 'do some magic!'
+    try:
+        print("jobs_get()")
+        jobs = []
+
+        # # Create the list of jobs from our data; join with DBUser for first_name, last_name
+        # explicit join:
+        for j in db.session.query(DBJob) \
+            .order_by(DBJob.Id) \
+            .all():
+
+            # Serialize the data for the response
+            # important for WKB deserialization
+            job_schema = DBJobSchema(many=False)
+            jobs_dict = job_schema.dump(j)
+
+            # Construct Swagger model for Job
+            jobs.append( Job(id=j.Id, employer_id=j.EmployerId, 
+                            default_image_picture_id=j.DefaultImagePictureId, 
+                            description=j.Description, 
+                            salary_hourly=j.SalaryHourly,
+                            work_hours_per_day=j.WorkHoursPerDay,
+                            work_days_per_week=j.WorkDaysPerWeek,
+                            accommodation_available=j.AccommodationAvailable,
+                            acommodation_cost_per_day=j.AccommodationCostPerDay,
+                            with_meals=j.WithMeals,
+                            meal_cost_per_day=j.MealCostPerDay,
+                            spoken_languages=j.SpokenLanguages,
+                            location= jobs_dict["Location"], #j.Location fails, because of WKB -> WKT
+                            location_description=j.LocationDescription,
+                            start_date=j.StartDate,
+                            end_date=j.EndDate,
+                            special_requirements=j.SpecialRequirements,
+                            contingent=j.Contingent,
+                            is_active=j.IsActive,
+                            visible_from=None,
+                            visible_to=None)
+                        )
+
+        return jobs
+        
+    except Exception as ex:
+        print("Error: {0}".format(ex))
 
 
 def jobs_job_id_delete(job_id):  # noqa: E501

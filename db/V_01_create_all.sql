@@ -11,6 +11,7 @@ CREATE TABLE "Address" (
   "Street" text,
   "HouseNumber" text,
   "PostalCode" text,
+  "City" text,
   "State" text --enum
 );
 

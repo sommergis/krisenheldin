@@ -2,6 +2,13 @@
 
 ```sh
 docker-compose build && docker-compose up
+```
+
+## Test Swagger UI
+http://localhost:6060/krisenheldin/1.0.0/ui/
+
+## Test per cURL
+```
 curl -X GET "http://localhost:6060/krisenheldin/1.0.0/employer" -H "accept: */*
 ```
 
@@ -10,6 +17,7 @@ should return
 ```json
 [
   {
+    "city": "Oberhummel",
     "firstName": "Hans",
     "houseNumber": "32a",
     "id": 1,

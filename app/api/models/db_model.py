@@ -18,10 +18,6 @@ from marshmallow import fields
 from datetime import datetime
 from api.run import db, ma
 
-# TODO: fix foreign keys - they are uncommented at the moment, because of error
-# AttributeError: 'Table' object has no attribute 'JobApplication.Id'
-
-
 # Code for serialization of Geography field with marshmellow
 # https://stackoverflow.com/questions/34894170/difficulty-serializing-geography-column-type-using-sqlalchemy-marshmallow
 class GeoConverter(ModelConverter):
@@ -35,7 +31,7 @@ class GeographySerializationField(fields.String):
         if value is None:
             return value
         else:
-            if attr == 'loc':
+            if attr == 'Location':
                 return {'latitude': db.session.scalar(geo_funcs.ST_X(value)), 'longitude': db.session.scalar(geo_funcs.ST_Y(value))}
             else:
                 return None
@@ -55,10 +51,32 @@ class GeographySerializationField(fields.String):
         if value is None:
             return value
         else:
-            if attr == 'loc':
+            if attr == 'Location':
                 return ma.WKTGeographyElement('POINT({0} {1})'.format(str(value.get('longitude')), str(value.get('latitude'))))
             else:
                 return None
+
+
+## Order of Classes is important because of SQLAlchemy relationships!
+
+class DBUser(db.Model):
+    __tablename__ = 'Users'
+
+    Id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key=True) #server_default=db.FetchedValue())
+    Login = db.Column(db.Text)
+    Password = db.Column(db.Text)
+    FirstName = db.Column(db.Text)
+    LastName = db.Column(db.Text)
+    
+    def __repr__(self):
+        return '<UserId {0}, Login {1}>'.format(self.Id, self.Login)
+
+
+class DBUserSchema(ma.ModelSchema):
+    class Meta:
+        model = DBUser
+        sqla_session = db.session
+
 
 class DBAddress(db.Model):
     __tablename__ = 'Address'
@@ -67,45 +85,13 @@ class DBAddress(db.Model):
     Street = db.Column(db.Text)
     HouseNumber = db.Column(db.Text)
     PostalCode = db.Column(db.Text)
+    City = db.Column(db.Text)
     State = db.Column(db.Text)
+
 
 class DBAddressSchema(ma.ModelSchema):
     class Meta:
         model = DBAddress
-        sqla_session = db.session
-
-
-class DBContract(db.Model):
-    __tablename__ = 'Contracts'
-
-    Id = db.Column(db.Integer, db.Sequence('contract_id_seq'), primary_key=True, server_default=db.FetchedValue())
-    JobApplicationId = db.Column(db.ForeignKey('JobApplications.Id'))
-    EmployeeSigned = db.Column(db.DateTime)
-    EmployerSigned = db.Column(db.DateTime)
-    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    #JobApplication = db.relationship('JobApplications', primaryjoin='Contracts.JobApplicationId == JobApplications.Id', backref='contracts')
-
-class DBContractSchema(ma.ModelSchema):
-    class Meta:
-        model = DBContract
-        sqla_session = db.session
-
-
-class DBEmployeeDocument(db.Model):
-    __tablename__ = 'EmployeeDocuments'
-
-    Id = db.Column(db.Integer, db.Sequence('employee_document_id_seq'), primary_key=True, server_default=db.FetchedValue())
-    EmployeeId = db.Column(db.ForeignKey('Employees.Id'))
-    EmployeeeDocumentType = db.Column(db.Text)
-    path = db.Column(db.Text)
-
-    #Employee = db.relationship('Employee', primaryjoin='EmployeeDocuments.EmployeeId == Employee.Id', backref='employee_documents')
-
-class DBEmployeeDocumentSchema(ma.ModelSchema):
-    class Meta:
-        model = DBEmployeeDocument
         sqla_session = db.session
 
 
@@ -119,8 +105,9 @@ class DBEmployee(db.Model):
     CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    #Address = db.relationship('Address', primaryjoin='Employees.AddressId == Addres.Id', backref='employees')
-    #User = db.relationship('Users', primaryjoin='Employees.UserId == User.Id', backref='employees')
+    User = db.relationship('DBUser', primaryjoin='DBUser.Id == DBEmployee.UserId', backref='employees')
+    Address = db.relationship('DBAddress', primaryjoin='DBAddress.Id == DBEmployee.AddressId', backref='employees')
+
 
 class DBEmployeeSchema(ma.ModelSchema):
     class Meta:
@@ -128,18 +115,20 @@ class DBEmployeeSchema(ma.ModelSchema):
         sqla_session = db.session
 
 
-class DBEmployerPicture(db.Model):
-    __tablename__ = 'EmployerPictures'
+class DBEmployeeDocument(db.Model):
+    __tablename__ = 'EmployeeDocuments'
 
-    Id = db.Column(db.Integer, db.Sequence('employer_picture_id_seq'), primary_key=True, server_default=db.FetchedValue())
-    EmployerId = db.Column(db.ForeignKey('Employers.Id'))
+    Id = db.Column(db.Integer, db.Sequence('employee_document_id_seq'), primary_key=True, server_default=db.FetchedValue())
+    EmployeeId = db.Column(db.ForeignKey('Employees.Id'))
+    EmployeeeDocumentType = db.Column(db.Text)
     path = db.Column(db.Text)
 
-    #Employer = db.relationship('Employers', primaryjoin='EmployerPictures.EmployerId == Employer.Id', backref='employer_pictures')
+    Employee = db.relationship('DBEmployee', primaryjoin='DBEmployee.Id == DBEmployeeDocument.EmployeeId', backref='employee_documents')
 
-class DBEmployerPictureSchema(ma.ModelSchema):
+
+class DBEmployeeDocumentSchema(ma.ModelSchema):
     class Meta:
-        model = DBEmployerPicture
+        model = DBEmployeeDocument
         sqla_session = db.session
 
 
@@ -156,60 +145,36 @@ class DBEmployer(db.Model):
     CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    #Address = db.relationship('Address', primaryjoin='Employers.AddressId == Address.Id', backref='employers')
-    #EmployerPicture = db.relationship('EmployerPictures', primaryjoin='Employers.DefaultPictureId == EmployerPicture.Id', backref='employers')
-    #User = db.relationship('User', primaryjoin='Employers.UserId == User.Id', backref='employers')
+    User = db.relationship('DBUser', primaryjoin='DBUser.Id == DBEmployer.UserId', backref='employers')
+    Address = db.relationship('DBAddress', primaryjoin='DBAddress.Id == DBEmployer.AddressId', backref='employers')
+
+    def __repr__(self):
+        return '<EmployerId {0}, CompanyName {1}>'.format(self.Id, self.CompanyName)
 
 class DBEmployerSchema(ma.ModelSchema):
     class Meta:
         model = DBEmployer
         sqla_session = db.session
 
-class DBJobApplication(db.Model):
-    __tablename__ = 'JobApplications'
 
-    Id = db.Column(db.Integer, db.Sequence('job_application_id_seq'), primary_key=True, server_default=db.FetchedValue())
-    JobId = db.Column(db.ForeignKey('Jobs.Id'))
-    EmployeeId = db.Column(db.ForeignKey('Employees.Id'))
+class DBEmployerPicture(db.Model):
+    __tablename__ = 'EmployerPictures'
+
+    Id = db.Column(db.Integer, db.Sequence('employer_picture_id_seq'), primary_key=True, server_default=db.FetchedValue())
     EmployerId = db.Column(db.ForeignKey('Employers.Id'))
-    EmployeeStatus = db.Column(db.Text)
-    EmployerStatus = db.Column(db.Text)
-    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    #Employee = db.relationship('Employees', primaryjoin='JobApplications.EmployeeId == Employees.Id', backref='job_applications')
-    #Employer = db.relationship('Employers', primaryjoin='JobApplications.EmployerId == Employers.Id', backref='job_applications')
-    #Job = db.relationship('Job', primaryjoin='JobApplications.JobId == Job.Id', backref='job_applications')
-
-class DBJobApplicationSchema(ma.ModelSchema):
-    class Meta:
-        model = DBJobApplication
-        sqla_session = db.session
-
-class DBJobPicture(db.Model):
-    __tablename__ = 'JobPictures'
-
-    Id = db.Column(db.Integer, db.Sequence('job_picture_id_seq'), primary_key=True, server_default=db.FetchedValue())
-    JobId = db.Column(db.ForeignKey('Jobs.Id'))
     path = db.Column(db.Text)
 
-    #Job = db.relationship('Jobs', primaryjoin='JobPictures.JobId == Job.Id', backref='job_pictures')
+    Employer = db.relationship('DBEmployer', primaryjoin='DBEmployerPicture.EmployerId == DBEmployer.Id', backref='employer_pictures')
 
-class DBJobPictureSchema(ma.ModelSchema):
+
+# define relationship after both DBEmployer and DBEmployerPicture exist
+DBEmployer.EmployerPicture = db.relationship('DBEmployerPicture', primaryjoin='DBEmployer.DefaultPictureId == DBEmployerPicture.Id',
+                                                backref='employers')
+
+class DBEmployerPictureSchema(ma.ModelSchema):
     class Meta:
-        model = DBJobPicture
+        model = DBEmployerPicture
         sqla_session = db.session
-
-
-t_JobPoints = db.Table(
-    'JobPoints',
-    db.Column('ContractId', db.ForeignKey('Contracts.Id')),
-    db.Column('EmployeeId', db.ForeignKey('Employees.Id')),
-    db.Column('GivenPoints', db.Integer),
-    db.Column('CreatedAt', db.DateTime),
-    db.Column('UpdatedAt', db.DateTime)
-)
-
 
 
 class DBJob(db.Model):
@@ -237,8 +202,7 @@ class DBJob(db.Model):
     CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    #JobPicture = db.relationship('JobPictures', primaryjoin='Jobs.DefaultImagePictureId == JobPictures.Id', backref='jobs')
-    #Employer = db.relationship('Employers', primaryjoin='Jobs.EmployerId == Employers.Id', backref='jobs')
+    Employer = db.relationship('DBEmployer', primaryjoin='DBJob.EmployerId == DBEmployer.Id', backref='jobs')
 
 class DBJobSchema(ma.ModelSchema):
     Location = GeographySerializationField(attribute='Location')
@@ -247,38 +211,139 @@ class DBJobSchema(ma.ModelSchema):
         sqla_session = db.session
         model_converter = GeoConverter
 
-class DBUser(db.Model):
-    __tablename__ = 'Users'
 
-    Id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key=True) #server_default=db.FetchedValue())
-    Login = db.Column(db.Text)
-    Password = db.Column(db.Text)
-    FirstName = db.Column(db.Text)
-    LastName = db.Column(db.Text)
-    
-    def __repr__(self):
-        return '<User %r>' % self.LastName
-        #return '<UserId {0}, Login {1}>'.format(self.Id, self.Login)
+class DBJobPicture(db.Model):
+    __tablename__ = 'JobPictures'
 
-class DBUserSchema(ma.ModelSchema):
+    Id = db.Column(db.Integer, db.Sequence('job_picture_id_seq'), primary_key=True, server_default=db.FetchedValue())
+    JobId = db.Column(db.ForeignKey('Jobs.Id'))
+    path = db.Column(db.Text)
+
+    Job = db.relationship('DBJob', primaryjoin='DBJobPicture.JobId == DBJob.Id', backref='job_pictures')
+
+# define relationship after both DBJobPicture and DBJob exist
+DBJob.JobPicture = db.relationship('DBJobPicture', primaryjoin='DBJob.DefaultImagePictureId == DBJobPicture.Id', backref='jobs')
+
+
+class DBJobPictureSchema(ma.ModelSchema):
     class Meta:
-        model = DBUser
+        model = DBJobPicture
         sqla_session = db.session
+
+
+class DBJobApplication(db.Model):
+    __tablename__ = 'JobApplications'
+
+    Id = db.Column(db.Integer, db.Sequence('job_application_id_seq'), primary_key=True, server_default=db.FetchedValue())
+    JobId = db.Column(db.ForeignKey('Jobs.Id'))
+    EmployeeId = db.Column(db.ForeignKey('Employees.Id'))
+    EmployerId = db.Column(db.ForeignKey('Employers.Id'))
+    EmployeeStatus = db.Column(db.Text)
+    EmployerStatus = db.Column(db.Text)
+    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    Job = db.relationship('DBJob', primaryjoin='DBJobApplication.JobId == DBJob.Id', backref='job_applications')
+    Employee = db.relationship('DBEmployee', primaryjoin='DBJobApplication.EmployeeId == DBEmployee.Id', backref='job_applications')
+    Employer = db.relationship('DBEmployer', primaryjoin='DBJobApplication.EmployerId == DBEmployer.Id', backref='job_applications')
+    
+
+class DBJobApplicationSchema(ma.ModelSchema):
+    class Meta:
+        model = DBJobApplication
+        sqla_session = db.session
+
+
+class DBContract(db.Model):
+    __tablename__ = 'Contracts'
+
+    Id = db.Column(db.Integer, db.Sequence('contract_id_seq'), primary_key=True, server_default=db.FetchedValue())
+    JobApplicationId = db.Column(db.ForeignKey('JobApplications.Id'))
+    EmployeeSigned = db.Column(db.DateTime)
+    EmployerSigned = db.Column(db.DateTime)
+    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    JobApplication = db.relationship('DBJobApplication', primaryjoin='DBContract.JobApplicationId == DBJobApplication.Id', backref='contracts')
+
+class DBContractSchema(ma.ModelSchema):
+    class Meta:
+        model = DBContract
+        sqla_session = db.session
+
+t_JobPoints = db.Table(
+    'JobPoints',
+    db.Column('ContractId', db.ForeignKey('Contracts.Id')),
+    db.Column('EmployeeId', db.ForeignKey('Employees.Id')),
+    db.Column('GivenPoints', db.Integer),
+    db.Column('CreatedAt', db.DateTime),
+    db.Column('UpdatedAt', db.DateTime)
+)
 
 # populate test data
 @event.listens_for(DBUser.__table__, 'after_create')
 def insert_initial_values_user(*args, **kwargs):
     db.session.add(DBUser(Login=u'meister_lampe', Password=u'verysecret', FirstName=u'Hans', LastName=u'Meister'))
+    db.session.add(DBUser(Login=u'sepp1', Password=u'verysecret', FirstName=u'Sepp', LastName=u'Hinterseher'))
+    db.session.add(DBUser(Login=u'horsti2000', Password=u'verysecret', FirstName=u'Horst', LastName=u'Müller'))
+    db.session.add(DBUser(Login=u'jana21', Password=u'verysecret', FirstName=u'Jana', LastName=u'Meier'))
     db.session.commit()
 
 @event.listens_for(DBEmployer.__table__, 'after_create')
 def insert_initial_values_employer(*args, **kwargs):
     db.session.add(DBEmployer(UserId=1, CompanyName=u'Meister Lampe GmbH', Industry=u'Bäcker', Description=u'Wir backen die besten Semmeln!', AddressId=1))
+    db.session.add(DBEmployer(UserId=2, CompanyName=u'Hinterseher Logistik GbR', Industry=u'Logistik', Description=u'Logistik - schnell und effizient', AddressId=2))
     db.session.commit()
 
 @event.listens_for(DBAddress.__table__, 'after_create')
 def insert_initial_values_address(*args, **kwargs):
-    db.session.add(DBAddress(PostalCode=85354, HouseNumber=u'32a', State=u'Deutschland', Street=u'Hinterhof 32'))
+    db.session.add(DBAddress(PostalCode=84028, HouseNumber=u'266', State=u'Deutschland', Street=u'Schirmgasse', City="Landshut"))
+    db.session.add(DBAddress(PostalCode=98724, HouseNumber=u'12', State=u'Deutschland', Street=u'Am Weiler', City="Neuhaus am Rennweg"))
+    db.session.add(DBAddress(PostalCode=85252, HouseNumber=u'1a', State=u'Deutschland', Street=u'Marktplatz', City="Hinterhausen"))
+    db.session.add(DBAddress(PostalCode=83856, HouseNumber=u'34', State=u'Deutschland', Street=u'Hauptstraße', City="Niederviehbach"))
+    db.session.commit()
+
+@event.listens_for(DBEmployee.__table__, 'after_create')
+def insert_initial_values_employee(*args, **kwargs):
+    db.session.add(DBEmployee(UserId=3, AddressId=3, Description="Ich hau richtig rein!"))
+    db.session.add(DBEmployee(UserId=4, AddressId=4, Description="Wir schaffen das!"))
+    db.session.commit()
+
+@event.listens_for(DBJob.__table__, 'after_create')
+def insert_initial_values_job(*args, **kwargs):
+    db.session.add(DBJob(EmployerId=1, DefaultImagePictureId=None, Description='',
+                        SalaryHourly=12,
+                        WorkHoursPerDay=7,
+                        WorkDaysPerWeek=5,
+                        AccommodationAvailable=False,
+                        AccommodationCostPerDay=None,
+                        WithMeals=True,
+                        MealCostPerDay=4.50,
+                        SpokenLanguages='Deutsch, English',
+                        Location = 'POINT(50.535 11.152)',
+                        LocationDescription='',
+                        StartDate=datetime(2020,4,1),
+                        EndDate=datetime(2020,4,30),
+                        SpecialRequirements='körperliche Belastbarkeit, früh aufstehen darf kein Problem sein',
+                        Contingent=2,
+                        IsActive=True))
+
+    db.session.add(DBJob(EmployerId=2, DefaultImagePictureId=None, Description='',
+                        SalaryHourly=14.5,
+                        WorkHoursPerDay=3,
+                        WorkDaysPerWeek=5,
+                        AccommodationAvailable=False,
+                        AccommodationCostPerDay=None,
+                        WithMeals=False,
+                        MealCostPerDay=None,
+                        SpokenLanguages='Deutsch',
+                        Location = 'POINT(48.535 12.152)',
+                        LocationDescription='',
+                        StartDate=datetime(2020,4,15),
+                        EndDate=None,
+                        SpecialRequirements='keine Holzstauballergie',
+                        Contingent=1,
+                        IsActive=True))
     db.session.commit()
 
 # Migrate database

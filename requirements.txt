@@ -1,4 +1,5 @@
 uwsgi>=2.0.18
+pg8000>=1.14.1 # google cloud requirement
 psycopg2>=2.7,<3.0
 werkzeug==0.16.1
 # Install swagger-ui before connexion.

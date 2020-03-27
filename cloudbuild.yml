@@ -1,8 +1,8 @@
 steps:   
     # build the app image
-    - name: 'eu.gcr.io/cloud-builders/docker'
-      args: ['build', '-t', 'eu.gcr.io/krisenheldinnen', '.']
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['build', '-t', 'eu.gcr.io/krisenheldin/api', '.']
 
 # image is pushed to Container Registry
 images:
-- 'eu.gcr.io/krisenheldinnen'
+- 'eu.gcr.io/krisenheldin/api'

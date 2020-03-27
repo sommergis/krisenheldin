@@ -21,7 +21,7 @@ flask_app = application
 
 # Configure the SQLAlchemy part of the app instance
 flask_app.config['SQLALCHEMY_ECHO'] = True
-flask_app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION_URI #'postgresql:////krisenheldinapi:verysecret@krisenheldin_db_1:5432//krisenheldin'
+flask_app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION_URI
 flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Create the SQLAlchemy db instance

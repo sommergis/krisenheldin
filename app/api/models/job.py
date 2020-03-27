@@ -62,9 +62,9 @@ class Job(Model):
         :type visible_to: str
         """
         self.swagger_types = {
-            'id': str,
-            'employer_id': str,
-            'default_image_picture_id': str,
+            'id': int,
+            'employer_id': int,
+            'default_image_picture_id': int,
             'description': str,
             'salary_hourly': float,
             'work_hours_per_day': float,

@@ -10,6 +10,8 @@ from api.models.login_credentials import LoginCredentials  # noqa: E501
 from api.models.picture import Picture  # noqa: E501
 from api import util
 
+from datetime import datetime
+
 def applications_application_id_delete(application_id):  # noqa: E501
     """deletes an application
 
@@ -670,10 +672,51 @@ def jobs_post(body):  # noqa: E501
     :type body: dict | bytes
 
     :rtype: None
-    """
-    if connexion.request.is_json:
-        body = Job.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    """    
+    try:
+        print("jobs_post()")
+
+        if connexion.request.is_json:
+            print(connexion.request)
+            print(connexion.request.get_json())
+            job = Job.from_dict(connexion.request.get_json())
+
+        if job:
+            
+            # Construct DB model for Job
+            dbjob = DBJob(EmployerId=job.employer_id, 
+                            DefaultImagePictureId=job.default_image_picture_id, 
+                            Description=job.description, 
+                            SalaryHourly=job.salary_hourly,
+                            WorkHoursPerDay=job.work_hours_per_day,
+                            WorkDaysPerWeek=job.work_days_per_week,
+                            AccommodationAvailable=job.accommodation_available,
+                            AccommodationCostPerDay=job.acommodation_cost_per_day,
+                            WithMeals=job.with_meals,
+                            MealCostPerDay=job.meal_cost_per_day,
+                            SpokenLanguages=job.spoken_languages,
+                            Location='POINT({0} {1})'.format(job.location.lat, job.location.lng),
+                            LocationDescription=job.location_description,
+                            StartDate=datetime.strptime(job.start_date, '%d.%m.%Y'),
+                            EndDate=datetime.strptime(job.end_date, '%d.%m.%Y'),
+                            SpecialRequirements=job.special_requirements,
+                            Contingent=job.contingent,
+                            IsActive=job.is_active)
+            # save to db
+            db.session.add(dbjob)
+            db.session.commit()
+
+            return dict(content="Job created!", status="success")
+
+        else:
+            return dict(status="error", message="Error creating job!")
+
+    except Exception as ex:
+        print("Error: {0}".format(ex))
+        # only for dev stage - turn to the following in production
+        # return dict(status="error", message="An unknown error occurred!")
+        return dict(status="error", message="{0}".format(ex))
+
 
 
 def login_post(body):  # noqa: E501

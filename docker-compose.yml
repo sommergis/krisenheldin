@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    # compatibility to Google Cloud SQL (PostgreSQL Version 9.6 supported)
+    # compatibility to Google Cloud SQL (PostgreSQL Version 11 supported)
     image: postgis/postgis:9.6-2.5-alpine
     restart: unless-stopped
     # code first: database will be created from python models

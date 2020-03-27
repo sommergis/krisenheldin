@@ -168,23 +168,18 @@ invoke build now with
 gcloud builds submit --config cloudbuild.yml
 ```
 
-- Warm up of cloud service (first few requests return HTTP 502)
-
-```sh
-# Apache Benchmark 'ab'
-ab -c 100 -n 500 https://krisenheldin-ocdqbzyzwa-ez.a.run.app
-```
+- first few request may return HTTP 502
 
 - Create PostgreSQL Cloud instance
 
 ```sh
 # test instance with public IP
-gcloud sql instances create krisenheldindb1 --database-version=POSTGRES_11 --tier db-f1-micro --region europe-west4 
+gcloud sql instances create XXX --database-version=POSTGRES_11 --tier db-f1-micro --region europe-west4 
 ```
 
-- Add DB 'krisenheldin'
-- Add DB User 'krisenheldinapi'
-- Add password for 'krisenheldinapi'
+- Add DB 'XXX'
+- Add DB User 'XXX'
+- Add password for 'XXX'
 - Deploy a new revision 
   - with the following environment variables:
   
@@ -208,4 +203,4 @@ CREATE EXTENSION postgis;
   
  - Trouble shooting: see Logs in Google Cloud Run!
    - Maybe enable the access to the Cloud SQL Admin API?
-     https://console.developers.google.com/apis/api/sqladmin.googleapis.com/overview?project=117041665537
+     https://console.developers.google.com/apis/api/sqladmin.googleapis.com/overview?project=XXXX

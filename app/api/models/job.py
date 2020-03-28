@@ -15,15 +15,15 @@ class Job(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: str=None, employer_id: str=None, default_image_picture_id: str=None, description: str=None, salary_hourly: float=None, work_hours_per_day: float=None, work_days_per_week: float=None, accommodation_available: bool=None, acommodation_cost_per_day: float=None, with_meals: bool=None, meal_cost_per_day: float=None, spoken_languages: str=None, location: JobLocation=None, location_description: str=None, start_date: str=None, end_date: str=None, special_requirements: str=None, contingent: float=None, is_active: bool=None, visible_from: str=None, visible_to: str=None):  # noqa: E501
+    def __init__(self, id: int=None, employer_id: int=None, default_image_picture_id: int=None, description: str=None, salary_hourly: float=None, work_hours_per_day: float=None, work_days_per_week: float=None, accommodation_available: bool=None, acommodation_cost_per_day: float=None, with_meals: bool=None, meal_cost_per_day: float=None, spoken_languages: str=None, location: JobLocation=None, location_description: str=None, start_date: date=None, end_date: date=None, special_requirements: str=None, contingent: float=None, is_active: bool=None, visible_from: date=None, visible_to: date=None):  # noqa: E501
         """Job - a model defined in Swagger
 
         :param id: The id of this Job.  # noqa: E501
-        :type id: str
+        :type id: int
         :param employer_id: The employer_id of this Job.  # noqa: E501
-        :type employer_id: str
+        :type employer_id: int
         :param default_image_picture_id: The default_image_picture_id of this Job.  # noqa: E501
-        :type default_image_picture_id: str
+        :type default_image_picture_id: int
         :param description: The description of this Job.  # noqa: E501
         :type description: str
         :param salary_hourly: The salary_hourly of this Job.  # noqa: E501
@@ -47,9 +47,9 @@ class Job(Model):
         :param location_description: The location_description of this Job.  # noqa: E501
         :type location_description: str
         :param start_date: The start_date of this Job.  # noqa: E501
-        :type start_date: str
+        :type start_date: date
         :param end_date: The end_date of this Job.  # noqa: E501
-        :type end_date: str
+        :type end_date: date
         :param special_requirements: The special_requirements of this Job.  # noqa: E501
         :type special_requirements: str
         :param contingent: The contingent of this Job.  # noqa: E501
@@ -57,9 +57,9 @@ class Job(Model):
         :param is_active: The is_active of this Job.  # noqa: E501
         :type is_active: bool
         :param visible_from: The visible_from of this Job.  # noqa: E501
-        :type visible_from: str
+        :type visible_from: date
         :param visible_to: The visible_to of this Job.  # noqa: E501
-        :type visible_to: str
+        :type visible_to: date
         """
         self.swagger_types = {
             'id': int,
@@ -76,13 +76,13 @@ class Job(Model):
             'spoken_languages': str,
             'location': JobLocation,
             'location_description': str,
-            'start_date': str,
-            'end_date': str,
+            'start_date': date,
+            'end_date': date,
             'special_requirements': str,
             'contingent': float,
             'is_active': bool,
-            'visible_from': str,
-            'visible_to': str
+            'visible_from': date,
+            'visible_to': date
         }
 
         self.attribute_map = {
@@ -142,64 +142,64 @@ class Job(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self) -> str:
+    def id(self) -> int:
         """Gets the id of this Job.
 
 
         :return: The id of this Job.
-        :rtype: str
+        :rtype: int
         """
         return self._id
 
     @id.setter
-    def id(self, id: str):
+    def id(self, id: int):
         """Sets the id of this Job.
 
 
         :param id: The id of this Job.
-        :type id: str
+        :type id: int
         """
 
         self._id = id
 
     @property
-    def employer_id(self) -> str:
+    def employer_id(self) -> int:
         """Gets the employer_id of this Job.
 
 
         :return: The employer_id of this Job.
-        :rtype: str
+        :rtype: int
         """
         return self._employer_id
 
     @employer_id.setter
-    def employer_id(self, employer_id: str):
+    def employer_id(self, employer_id: int):
         """Sets the employer_id of this Job.
 
 
         :param employer_id: The employer_id of this Job.
-        :type employer_id: str
+        :type employer_id: int
         """
 
         self._employer_id = employer_id
 
     @property
-    def default_image_picture_id(self) -> str:
+    def default_image_picture_id(self) -> int:
         """Gets the default_image_picture_id of this Job.
 
 
         :return: The default_image_picture_id of this Job.
-        :rtype: str
+        :rtype: int
         """
         return self._default_image_picture_id
 
     @default_image_picture_id.setter
-    def default_image_picture_id(self, default_image_picture_id: str):
+    def default_image_picture_id(self, default_image_picture_id: int):
         """Sets the default_image_picture_id of this Job.
 
 
         :param default_image_picture_id: The default_image_picture_id of this Job.
-        :type default_image_picture_id: str
+        :type default_image_picture_id: int
         """
 
         self._default_image_picture_id = default_image_picture_id
@@ -436,43 +436,43 @@ class Job(Model):
         self._location_description = location_description
 
     @property
-    def start_date(self) -> str:
+    def start_date(self) -> date:
         """Gets the start_date of this Job.
 
 
         :return: The start_date of this Job.
-        :rtype: str
+        :rtype: date
         """
         return self._start_date
 
     @start_date.setter
-    def start_date(self, start_date: str):
+    def start_date(self, start_date: date):
         """Sets the start_date of this Job.
 
 
         :param start_date: The start_date of this Job.
-        :type start_date: str
+        :type start_date: date
         """
 
         self._start_date = start_date
 
     @property
-    def end_date(self) -> str:
+    def end_date(self) -> date:
         """Gets the end_date of this Job.
 
 
         :return: The end_date of this Job.
-        :rtype: str
+        :rtype: date
         """
         return self._end_date
 
     @end_date.setter
-    def end_date(self, end_date: str):
+    def end_date(self, end_date: date):
         """Sets the end_date of this Job.
 
 
         :param end_date: The end_date of this Job.
-        :type end_date: str
+        :type end_date: date
         """
 
         self._end_date = end_date
@@ -541,43 +541,43 @@ class Job(Model):
         self._is_active = is_active
 
     @property
-    def visible_from(self) -> str:
+    def visible_from(self) -> date:
         """Gets the visible_from of this Job.
 
 
         :return: The visible_from of this Job.
-        :rtype: str
+        :rtype: date
         """
         return self._visible_from
 
     @visible_from.setter
-    def visible_from(self, visible_from: str):
+    def visible_from(self, visible_from: date):
         """Sets the visible_from of this Job.
 
 
         :param visible_from: The visible_from of this Job.
-        :type visible_from: str
+        :type visible_from: date
         """
 
         self._visible_from = visible_from
 
     @property
-    def visible_to(self) -> str:
+    def visible_to(self) -> date:
         """Gets the visible_to of this Job.
 
 
         :return: The visible_to of this Job.
-        :rtype: str
+        :rtype: date
         """
         return self._visible_to
 
     @visible_to.setter
-    def visible_to(self, visible_to: str):
+    def visible_to(self, visible_to: date):
         """Sets the visible_to of this Job.
 
 
         :param visible_to: The visible_to of this Job.
-        :type visible_to: str
+        :type visible_to: date
         """
 
         self._visible_to = visible_to

@@ -14,23 +14,23 @@ class Contract(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: str=None, job_application_id: str=None, employer_signed: str=None, employee_signed: str=None):  # noqa: E501
+    def __init__(self, id: int=None, job_application_id: int=None, employer_signed: date=None, employee_signed: date=None):  # noqa: E501
         """Contract - a model defined in Swagger
 
         :param id: The id of this Contract.  # noqa: E501
-        :type id: str
+        :type id: int
         :param job_application_id: The job_application_id of this Contract.  # noqa: E501
-        :type job_application_id: str
+        :type job_application_id: int
         :param employer_signed: The employer_signed of this Contract.  # noqa: E501
-        :type employer_signed: str
+        :type employer_signed: date
         :param employee_signed: The employee_signed of this Contract.  # noqa: E501
-        :type employee_signed: str
+        :type employee_signed: date
         """
         self.swagger_types = {
-            'id': str,
-            'job_application_id': str,
-            'employer_signed': str,
-            'employee_signed': str
+            'id': int,
+            'job_application_id': int,
+            'employer_signed': date,
+            'employee_signed': date
         }
 
         self.attribute_map = {
@@ -56,85 +56,85 @@ class Contract(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self) -> str:
+    def id(self) -> int:
         """Gets the id of this Contract.
 
 
         :return: The id of this Contract.
-        :rtype: str
+        :rtype: int
         """
         return self._id
 
     @id.setter
-    def id(self, id: str):
+    def id(self, id: int):
         """Sets the id of this Contract.
 
 
         :param id: The id of this Contract.
-        :type id: str
+        :type id: int
         """
 
         self._id = id
 
     @property
-    def job_application_id(self) -> str:
+    def job_application_id(self) -> int:
         """Gets the job_application_id of this Contract.
 
 
         :return: The job_application_id of this Contract.
-        :rtype: str
+        :rtype: int
         """
         return self._job_application_id
 
     @job_application_id.setter
-    def job_application_id(self, job_application_id: str):
+    def job_application_id(self, job_application_id: int):
         """Sets the job_application_id of this Contract.
 
 
         :param job_application_id: The job_application_id of this Contract.
-        :type job_application_id: str
+        :type job_application_id: int
         """
 
         self._job_application_id = job_application_id
 
     @property
-    def employer_signed(self) -> str:
+    def employer_signed(self) -> date:
         """Gets the employer_signed of this Contract.
 
 
         :return: The employer_signed of this Contract.
-        :rtype: str
+        :rtype: date
         """
         return self._employer_signed
 
     @employer_signed.setter
-    def employer_signed(self, employer_signed: str):
+    def employer_signed(self, employer_signed: date):
         """Sets the employer_signed of this Contract.
 
 
         :param employer_signed: The employer_signed of this Contract.
-        :type employer_signed: str
+        :type employer_signed: date
         """
 
         self._employer_signed = employer_signed
 
     @property
-    def employee_signed(self) -> str:
+    def employee_signed(self) -> date:
         """Gets the employee_signed of this Contract.
 
 
         :return: The employee_signed of this Contract.
-        :rtype: str
+        :rtype: date
         """
         return self._employee_signed
 
     @employee_signed.setter
-    def employee_signed(self, employee_signed: str):
+    def employee_signed(self, employee_signed: date):
         """Sets the employee_signed of this Contract.
 
 
         :param employee_signed: The employee_signed of this Contract.
-        :type employee_signed: str
+        :type employee_signed: date
         """
 
         self._employee_signed = employee_signed

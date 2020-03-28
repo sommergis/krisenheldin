@@ -14,13 +14,21 @@ class Employer(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: str=None, default_picture_id: str=None, first_name: str=None, last_name: str=None, street: str=None, house_number: str=None, postal_code: str=None, city: str=None, state: str=None):  # noqa: E501
+    def __init__(self, id: int=None, user_id: int=None, default_picture_id: int=None, company_name: str=None, industry: str=None, description: str=None, first_name: str=None, last_name: str=None, street: str=None, house_number: str=None, postal_code: str=None, city: str=None, state: str=None):  # noqa: E501
         """Employer - a model defined in Swagger
 
         :param id: The id of this Employer.  # noqa: E501
-        :type id: str
+        :type id: int
+        :param user_id: The user_id of this Employer.  # noqa: E501
+        :type user_id: int
         :param default_picture_id: The default_picture_id of this Employer.  # noqa: E501
-        :type default_picture_id: str
+        :type default_picture_id: int
+        :param company_name: The company_name of this Employer.  # noqa: E501
+        :type company_name: str
+        :param industry: The industry of this Employer.  # noqa: E501
+        :type industry: str
+        :param description: The description of this Employer.  # noqa: E501
+        :type description: str
         :param first_name: The first_name of this Employer.  # noqa: E501
         :type first_name: str
         :param last_name: The last_name of this Employer.  # noqa: E501
@@ -37,8 +45,12 @@ class Employer(Model):
         :type state: str
         """
         self.swagger_types = {
-            'id': str,
-            'default_picture_id': str,
+            'id': int,
+            'user_id': int,
+            'default_picture_id': int,
+            'company_name': str,
+            'industry': str,
+            'description': str,
             'first_name': str,
             'last_name': str,
             'street': str,
@@ -50,7 +62,11 @@ class Employer(Model):
 
         self.attribute_map = {
             'id': 'id',
+            'user_id': 'userId',
             'default_picture_id': 'defaultPictureId',
+            'company_name': 'companyName',
+            'industry': 'industry',
+            'description': 'description',
             'first_name': 'firstName',
             'last_name': 'lastName',
             'street': 'street',
@@ -60,7 +76,11 @@ class Employer(Model):
             'state': 'state'
         }
         self._id = id
+        self._user_id = user_id
         self._default_picture_id = default_picture_id
+        self._company_name = company_name
+        self._industry = industry
+        self._description = description
         self._first_name = first_name
         self._last_name = last_name
         self._street = street
@@ -81,46 +101,130 @@ class Employer(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self) -> str:
+    def id(self) -> int:
         """Gets the id of this Employer.
 
 
         :return: The id of this Employer.
-        :rtype: str
+        :rtype: int
         """
         return self._id
 
     @id.setter
-    def id(self, id: str):
+    def id(self, id: int):
         """Sets the id of this Employer.
 
 
         :param id: The id of this Employer.
-        :type id: str
+        :type id: int
         """
 
         self._id = id
 
     @property
-    def default_picture_id(self) -> str:
+    def user_id(self) -> int:
+        """Gets the user_id of this Employer.
+
+
+        :return: The user_id of this Employer.
+        :rtype: int
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id: int):
+        """Sets the user_id of this Employer.
+
+
+        :param user_id: The user_id of this Employer.
+        :type user_id: int
+        """
+
+        self._user_id = user_id
+
+    @property
+    def default_picture_id(self) -> int:
         """Gets the default_picture_id of this Employer.
 
 
         :return: The default_picture_id of this Employer.
-        :rtype: str
+        :rtype: int
         """
         return self._default_picture_id
 
     @default_picture_id.setter
-    def default_picture_id(self, default_picture_id: str):
+    def default_picture_id(self, default_picture_id: int):
         """Sets the default_picture_id of this Employer.
 
 
         :param default_picture_id: The default_picture_id of this Employer.
-        :type default_picture_id: str
+        :type default_picture_id: int
         """
 
         self._default_picture_id = default_picture_id
+
+    @property
+    def company_name(self) -> str:
+        """Gets the company_name of this Employer.
+
+
+        :return: The company_name of this Employer.
+        :rtype: str
+        """
+        return self._company_name
+
+    @company_name.setter
+    def company_name(self, company_name: str):
+        """Sets the company_name of this Employer.
+
+
+        :param company_name: The company_name of this Employer.
+        :type company_name: str
+        """
+
+        self._company_name = company_name
+
+    @property
+    def industry(self) -> str:
+        """Gets the industry of this Employer.
+
+
+        :return: The industry of this Employer.
+        :rtype: str
+        """
+        return self._industry
+
+    @industry.setter
+    def industry(self, industry: str):
+        """Sets the industry of this Employer.
+
+
+        :param industry: The industry of this Employer.
+        :type industry: str
+        """
+
+        self._industry = industry
+
+    @property
+    def description(self) -> str:
+        """Gets the description of this Employer.
+
+
+        :return: The description of this Employer.
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description: str):
+        """Sets the description of this Employer.
+
+
+        :param description: The description of this Employer.
+        :type description: str
+        """
+
+        self._description = description
 
     @property
     def first_name(self) -> str:

@@ -102,7 +102,7 @@ class DBEmployee(db.Model):
     UserId = db.Column(db.ForeignKey('Users.Id'))
     AddressId = db.Column(db.ForeignKey('Address.Id'))
     Description = db.Column(db.Text)
-    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     User = db.relationship('DBUser', primaryjoin='DBUser.Id == DBEmployee.UserId', backref='employees')
@@ -142,7 +142,7 @@ class DBEmployer(db.Model):
     Industry = db.Column(db.Text)
     Description = db.Column(db.Text)
     AddressId = db.Column(db.ForeignKey('Address.Id'))
-    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     User = db.relationship('DBUser', primaryjoin='DBUser.Id == DBEmployer.UserId', backref='employers')
@@ -199,7 +199,7 @@ class DBJob(db.Model):
     SpecialRequirements = db.Column(db.Text)
     Contingent = db.Column(db.Integer)
     IsActive = db.Column(db.Boolean)
-    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     Employer = db.relationship('DBEmployer', primaryjoin='DBJob.EmployerId == DBEmployer.Id', backref='jobs')
@@ -240,7 +240,7 @@ class DBJobApplication(db.Model):
     EmployerId = db.Column(db.ForeignKey('Employers.Id'))
     EmployeeStatus = db.Column(db.Text)
     EmployerStatus = db.Column(db.Text)
-    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     Job = db.relationship('DBJob', primaryjoin='DBJobApplication.JobId == DBJob.Id', backref='job_applications')
@@ -261,7 +261,7 @@ class DBContract(db.Model):
     JobApplicationId = db.Column(db.ForeignKey('JobApplications.Id'))
     EmployeeSigned = db.Column(db.DateTime)
     EmployerSigned = db.Column(db.DateTime)
-    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    CreatedAt = db.Column(db.DateTime, default=datetime.utcnow)
     UpdatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     JobApplication = db.relationship('DBJobApplication', primaryjoin='DBContract.JobApplicationId == DBJobApplication.Id', backref='contracts')

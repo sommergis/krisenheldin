@@ -2,22 +2,75 @@ openapi: 3.0.0
 info:
   title: krisenheld:in-API
   description: API of the krisenheld:in Plattform.
-  version: 1.0.0
+  version: 1.0.1
 servers:
-- url: https://virtserver.swaggerhub.com/krisenheldin/1.0.0
+- url: https://virtserver.swaggerhub.com/krisenheldin/1.0.1
   description: SwaggerHub API Auto Mocking
 paths:
-  /employer:
+  /users:
     get:
-      summary: Returns a list of employers.
-      operationId: employer_get
+      summary: Returns a list of users.
+      operationId: users_get
       responses:
         "200":
           description: A JSON array of employers
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+    post:
+      summary: Creates a new user
+      operationId: users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+      responses:
+        "201":
+          description: Created
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+      x-openapi-router-controller: api.controllers.default_controller
+  /users/{userId}:
+    get:
+      summary: Returns a users by ID.
+      operationId: users_user_id_get
+      parameters:
+        - name: userId
+          in: path
+          description: The ID of the user to return.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            minimum: 1
+            type: integer
+      responses:
+        "200":
+          description: A JSON array of employers
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "404":
+          description: Throw 404 if resource was not found
+      x-openapi-router-controller: api.controllers.default_controller
+  /employers:
+    get:
+      summary: Returns a list of employers.
+      operationId: employers_get
+      responses:
+        "200":
+          description: A JSON array of employers
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "404":
+          description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
     post:
       summary: Creates a new employer
-      operationId: employer_post
+      operationId: employers_post
       requestBody:
         content:
           application/json:
@@ -27,11 +80,13 @@ paths:
       responses:
         "201":
           description: Created
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
       x-openapi-router-controller: api.controllers.default_controller
-  /employer/{employerId}:
+  /employers/{employerId}:
     get:
       summary: Returns an employer by ID.
-      operationId: employer_employer_id_get
+      operationId: employers_employer_id_get
       parameters:
       - name: employerId
         in: path
@@ -41,7 +96,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: An employer object.
@@ -49,12 +104,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/employer'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
     put:
       summary: Update changes to employer
-      operationId: employer_employer_id_put
+      operationId: employers_employer_id_put
       parameters:
       - name: employerId
         in: path
@@ -64,7 +121,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: An employer object.
@@ -72,12 +129,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/employer'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
     delete:
       summary: deletes an employer profile. Admin only
-      operationId: employer_employer_id_delete
+      operationId: employers_employer_id_delete
       parameters:
       - name: employerId
         in: path
@@ -87,26 +146,28 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: employer successfully deleted
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
           description: Something went wrong
       x-openapi-router-controller: api.controllers.default_controller
-  /employee:
+  /employees:
     get:
       summary: Returns a list of employees.
-      operationId: employee_get
+      operationId: employees_get
       responses:
         "200":
           description: A JSON array of employees
       x-openapi-router-controller: api.controllers.default_controller
     post:
       summary: Creates a new employee
-      operationId: employee_post
+      operationId: employees_post
       requestBody:
         content:
           application/json:
@@ -130,7 +191,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: An employer object.
@@ -138,6 +199,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/employee'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
@@ -153,7 +216,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: An employee object.
@@ -161,6 +224,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/employee'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
@@ -176,10 +241,12 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: employer successfully deleted
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
@@ -219,7 +286,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: A job object.
@@ -227,6 +294,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/job'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
@@ -242,7 +311,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: A job object.
@@ -250,6 +319,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/job'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
@@ -265,10 +336,12 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: job successfully deleted
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
@@ -298,11 +371,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/picture'
                 x-content-type: application/json
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
     post:
-      summary: Creates a new picture
+      summary: Creates a new job picture
       operationId: jobs_job_id_pictures_post
       parameters:
         - name: jobId
@@ -337,7 +412,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       - name: pictureId
         in: path
         description: The ID of the picture to show.
@@ -346,10 +421,12 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: job successfully deleted
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
@@ -367,7 +444,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       - name: pictureId
         in: path
         description: The ID of the picture to delete.
@@ -376,10 +453,12 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: job successfully deleted
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
@@ -412,7 +491,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: An application object.
@@ -420,6 +499,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/jobApplication'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
@@ -435,7 +516,7 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: An application object.
@@ -443,6 +524,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/jobApplication'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
       x-openapi-router-controller: api.controllers.default_controller
@@ -458,10 +541,12 @@ paths:
         explode: false
         schema:
           minimum: 1
-          type: string
+          type: integer
       responses:
         "200":
           description: application successfully deleted
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
@@ -514,15 +599,17 @@ paths:
                 items:
                   $ref: '#/components/schemas/job'
                 x-content-type: application/json
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
           description: Something went wrong
       x-openapi-router-controller: api.controllers.default_controller
-  /contract/{contractId}:
+  /contracts/{contractId}:
     get:
-      summary: Returns the specified contract of jobs in the specified search area.
-      operationId: contract_contract_id_get
+      summary: Returns the specified contract of jobs.
+      operationId: contracts_contract_id_get
       parameters:
       - name: contractId
         in: path
@@ -530,7 +617,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
           description: Id of the contract to show
       responses:
         "200":
@@ -542,6 +629,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/contract'
                 x-content-type: application/json
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         "404":
           description: Throw 404 if resource was not found
         default:
@@ -549,8 +638,7 @@ paths:
       x-openapi-router-controller: api.controllers.default_controller
   /login:
     post:
-      summary: Userlogin, returns the users jwttoken for authentication. WARNING potentially
-        insecure, revision required
+      summary: Userlogin, returns the users jwttoken for authentication. WARNING potentially insecure, revision required
       operationId: login_post
       requestBody:
         content:
@@ -566,23 +654,44 @@ paths:
               schema:
                 type: object
                 description: Bearer token containg userclaims. Needs revision!
-                x-content-type: application/json
-        "403":
-          description: Throw 403 if login failed
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
         default:
           description: Something went wrong
       x-openapi-router-controller: api.controllers.default_controller
 components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  # securitySchemes:
+  #   jwtAuth:
+  #     type: http
+  #     scheme: bearer
+  #     bearerFormat: JWT
+  #     x-bearerInfoFunc: app.decode_token # connexion rule!
   schemas:
     employer:
       type: object
       properties:
         id:
-          type: string
-          example: asd1234SAds
+          type: integer
+          example: 1234
+          readOnly: true # only visible in GET - not available in POST/PUT
+        userId:
+          type: integer
+          example: 12
         defaultPictureId:
+          type: integer
+          example: 23
+        companyName:
           type: string
-          example: asd1234SAds
+          example: MaxiMarkt
+        industry:
+          type: string
+          example: Lebensmittelhandel
+        description:
+          type: string
+          example: Wir lieben Lebensmittel
         firstName:
           type: string
           example: Holger
@@ -597,7 +706,7 @@ components:
           example: 135a
         postalCode:
           type: string
-          example: "12321"
+          example: "02321"
         city:
           type: string
           example: Schöndorf
@@ -605,27 +714,38 @@ components:
           type: string
           example: Nordrhein-Westfalen
       example:
+        companyName: MaxiMarkt
+        industry: Lebensmittelhandel
+        description: Wir lieben Lebensmittel
         firstName: Holger
         lastName: Müller
         city: Schöndorf
         street: Feldstraße
-        postalCode: "12321"
+        postalCode: "02321"
         houseNumber: 135a
-        defaultPictureId: asd1234SAds
-        id: asd1234SAds
+        defaultPictureId: 23
+        id: 1234
+        userId: 12
         state: Nordrhein-Westfalen
     employee:
       type: object
       properties:
         id:
-          type: string
-          example: asd1234SAds
+          type: integer
+          example: 456
+          readOnly: true # only visible in GET - not available in POST/PUT
+        userId:
+          type: integer
+          example: 13
         firstName:
           type: string
-          example: Holger
+          example: Hans
         lastName:
           type: string
-          example: Müller
+          example: Meier
+        description:
+          type: string
+          example: Ich bin hoch motiviert!
         street:
           type: string
           example: Feldstraße
@@ -634,7 +754,7 @@ components:
           example: 135a
         postalCode:
           type: string
-          example: "12321"
+          example: "02321"
         city:
           type: string
           example: Schöndorf
@@ -642,26 +762,29 @@ components:
           type: string
           example: Nordrhein-Westfalen
       example:
-        firstName: Holger
-        lastName: Müller
+        firstName: Hans
+        lastName: Meier
         city: Schöndorf
         street: Feldstraße
-        postalCode: "12321"
+        postalCode: "02321"
         houseNumber: 135a
-        id: asd1234SAds
+        id: 456
+        userId: 13
         state: Nordrhein-Westfalen
+        description: Ich bin hoch motiviert!
     job:
       type: object
       properties:
         id:
-          type: string
-          example: 12ASD4231f
+          type: integer
+          example: 126464
+          readOnly: true # only visible in GET - not available in POST/PUT
         employerId:
-          type: string
-          example: 543ef2
+          type: integer
+          example: 1234
         defaultImagePictureId:
-          type: string
-          example: d23d23d
+          type: integer
+          example: 23
         description:
           type: string
           example: Aushilfe bei der Belieferung von Lebensmittelhandel
@@ -696,9 +819,11 @@ components:
           example: nahe Bad Wünnenberg
         startDate:
           type: string
+          format: date
           example: 01.05.2020
         endDate:
           type: string
+          format: date
           example: 30.05.2020
         specialRequirements:
           type: string
@@ -711,9 +836,11 @@ components:
           example: true
         visibleFrom:
           type: string
+          format: date
           example: 01.05.2020
         visibleTo:
           type: string
+          format: date
           example: 30.05.2020
       example:
         acommodationCostPerDay: 9.5
@@ -724,16 +851,16 @@ components:
         description: Aushilfe bei der Belieferung von Lebensmittelhandel
         contingent: 100
         isActive: true
-        defaultImagePictureId: d23d23d
+        defaultImagePictureId: 23
         workHoursPerDay: 8
-        employerId: 543ef2
+        employerId: 1234
         workDaysPerWeek: 5
         spokenLanguages: deutsch, english, polish
         location:
           lng: 8.666
           lat: 51.55133
         visibleTo: 30.05.2020
-        id: 12ASD4231f
+        id: 126464
         salaryHourly: 9.75
         mealCostPerDay: 5.5
         visibleFrom: 01.05.2020
@@ -743,14 +870,15 @@ components:
       type: object
       properties:
         id:
-          type: string
-          example: asdf1234
+          type: integer
+          example: 1234
+          readOnly: true # only visible in GET - not available in POST/PUT
         jobId:
-          type: string
-          example: 123rv32
+          type: integer
+          example: 123423
         employeeId:
-          type: string
-          example: 231423456vxx
+          type: integer
+          example: 2342
         employeeStatus:
           type: string
           example: available
@@ -758,31 +886,34 @@ components:
           type: string
           example: available
       example:
-        jobId: 123rv32
+        jobId: 123423
         employerStatus: available
-        employeeId: 231423456vxx
-        id: asdf1234
+        employeeId: 2342
+        id: 1234
         employeeStatus: available
     contract:
       type: object
       properties:
         id:
-          type: string
-          example: asdf1234
+          type: integer
+          example: 
+          readOnly: true # only visible in GET - not available in POST/PUT
         jobApplicationId:
-          type: string
-          example: 123rv32
+          type: integer
+          example: 123455
         employerSigned:
           type: string
-          example: 12.5.20
+          format: date
+          example: 12.5.2020
         employeeSigned:
           type: string
-          example: 12.5.20
+          format: date
+          example: 12.5.2020
       example:
-        employerSigned: 12.5.20
-        jobApplicationId: 123rv32
-        id: asdf1234
-        employeeSigned: 12.5.20
+        employerSigned: 12.5.2020
+        jobApplicationId: 123455
+        id: 121
+        employeeSigned: 12.5.2020
     address:
       type: object
       properties:
@@ -806,7 +937,7 @@ components:
           example: media/pdf
         path:
           type: string
-          example: media.krisenheldinnen.de/employee_documents/164sc234d654.pdf
+          example: media.krisenheldin.de/employees_documents/164sc234d654.pdf
     picture:
       type: object
       properties:
@@ -815,9 +946,9 @@ components:
           example: image/jpeg
         path:
           type: string
-          example: media.krisenheldinnen.de/employer_pictures/qwre132410.pdf
+          example: media.krisenheldin.de/employer_pictures/qwre132410.pdf
       example:
-        path: media.krisenheldinnen.de/employer_pictures/qwre132410.pdf
+        path: media.krisenheldin.de/employer_pictures/qwre132410.pdf
         documentType: image/jpeg
     loginCredentials:
       type: object
@@ -840,4 +971,26 @@ components:
       example:
         lng: 8.666
         lat: 51.55133
-
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1234
+          readOnly: true # only visible in GET - not available in POST/PUT
+        login:
+          type: string
+          example: sepp@mail.de
+        password:
+          type: string
+          format: password
+          example: xöd09383dff
+          writeOnly: true # only passed in POST/PUT - not visible in GET
+      example:
+        id: 1234
+        login: sepp@mail.de
+        password: xöd09383dff
+  # security globally to all operations
+#security:
+#  - jwtAuth: []         # use the same name as above
+  

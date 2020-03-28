@@ -14,24 +14,24 @@ class JobApplication(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: str=None, job_id: str=None, employee_id: str=None, employee_status: str=None, employer_status: str=None):  # noqa: E501
+    def __init__(self, id: int=None, job_id: int=None, employee_id: int=None, employee_status: str=None, employer_status: str=None):  # noqa: E501
         """JobApplication - a model defined in Swagger
 
         :param id: The id of this JobApplication.  # noqa: E501
-        :type id: str
+        :type id: int
         :param job_id: The job_id of this JobApplication.  # noqa: E501
-        :type job_id: str
+        :type job_id: int
         :param employee_id: The employee_id of this JobApplication.  # noqa: E501
-        :type employee_id: str
+        :type employee_id: int
         :param employee_status: The employee_status of this JobApplication.  # noqa: E501
         :type employee_status: str
         :param employer_status: The employer_status of this JobApplication.  # noqa: E501
         :type employer_status: str
         """
         self.swagger_types = {
-            'id': str,
-            'job_id': str,
-            'employee_id': str,
+            'id': int,
+            'job_id': int,
+            'employee_id': int,
             'employee_status': str,
             'employer_status': str
         }
@@ -61,64 +61,64 @@ class JobApplication(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self) -> str:
+    def id(self) -> int:
         """Gets the id of this JobApplication.
 
 
         :return: The id of this JobApplication.
-        :rtype: str
+        :rtype: int
         """
         return self._id
 
     @id.setter
-    def id(self, id: str):
+    def id(self, id: int):
         """Sets the id of this JobApplication.
 
 
         :param id: The id of this JobApplication.
-        :type id: str
+        :type id: int
         """
 
         self._id = id
 
     @property
-    def job_id(self) -> str:
+    def job_id(self) -> int:
         """Gets the job_id of this JobApplication.
 
 
         :return: The job_id of this JobApplication.
-        :rtype: str
+        :rtype: int
         """
         return self._job_id
 
     @job_id.setter
-    def job_id(self, job_id: str):
+    def job_id(self, job_id: int):
         """Sets the job_id of this JobApplication.
 
 
         :param job_id: The job_id of this JobApplication.
-        :type job_id: str
+        :type job_id: int
         """
 
         self._job_id = job_id
 
     @property
-    def employee_id(self) -> str:
+    def employee_id(self) -> int:
         """Gets the employee_id of this JobApplication.
 
 
         :return: The employee_id of this JobApplication.
-        :rtype: str
+        :rtype: int
         """
         return self._employee_id
 
     @employee_id.setter
-    def employee_id(self, employee_id: str):
+    def employee_id(self, employee_id: int):
         """Sets the employee_id of this JobApplication.
 
 
         :param employee_id: The employee_id of this JobApplication.
-        :type employee_id: str
+        :type employee_id: int
         """
 
         self._employee_id = employee_id

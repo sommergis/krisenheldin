@@ -12,6 +12,7 @@ from api.models.job import Job  # noqa: E501
 from api.models.job_application import JobApplication  # noqa: E501
 from api.models.login_credentials import LoginCredentials  # noqa: E501
 from api.models.picture import Picture  # noqa: E501
+from api.models.user import User  # noqa: E501
 from api.test import BaseTestCase
 
 
@@ -24,7 +25,7 @@ class TestDefaultController(BaseTestCase):
         deletes an application
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/applications/{applicationId}'.format(application_id='application_id_example'),
+            '/sommergis/krisenheldin/1.0.1/applications/{applicationId}'.format(application_id=2),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -35,7 +36,7 @@ class TestDefaultController(BaseTestCase):
         Returns an application.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/applications/{applicationId}'.format(application_id='application_id_example'),
+            '/sommergis/krisenheldin/1.0.1/applications/{applicationId}'.format(application_id=2),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -46,7 +47,7 @@ class TestDefaultController(BaseTestCase):
         Update changes to application
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/applications/{applicationId}'.format(application_id='application_id_example'),
+            '/sommergis/krisenheldin/1.0.1/applications/{applicationId}'.format(application_id=2),
             method='PUT')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -58,46 +59,21 @@ class TestDefaultController(BaseTestCase):
         """
         body = JobApplication()
         response = self.client.open(
-            '/krisenheldin/1.0.0/applications',
+            '/sommergis/krisenheldin/1.0.1/applications',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_contract_contract_id_get(self):
-        """Test case for contract_contract_id_get
+    def test_contracts_contract_id_get(self):
+        """Test case for contracts_contract_id_get
 
-        Returns the specified contract of jobs in the specified search area.
+        Returns the specified contract of jobs.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/contract/{contractId}'.format(contract_id='contract_id_example'),
+            '/sommergis/krisenheldin/1.0.1/contracts/{contractId}'.format(contract_id=56),
             method='GET')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_employee_get(self):
-        """Test case for employee_get
-
-        Returns a list of employees.
-        """
-        response = self.client.open(
-            '/krisenheldin/1.0.0/employee',
-            method='GET')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_employee_post(self):
-        """Test case for employee_post
-
-        Creates a new employee
-        """
-        body = Employer()
-        response = self.client.open(
-            '/krisenheldin/1.0.0/employee',
-            method='POST',
-            data=json.dumps(body),
-            content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
@@ -107,7 +83,7 @@ class TestDefaultController(BaseTestCase):
         deletes an employee profile. Admin only
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/employees/{employeeId}'.format(employee_id='employee_id_example'),
+            '/sommergis/krisenheldin/1.0.1/employees/{employeeId}'.format(employee_id=2),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -118,7 +94,7 @@ class TestDefaultController(BaseTestCase):
         Returns an employee by ID.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/employees/{employeeId}'.format(employee_id='employee_id_example'),
+            '/sommergis/krisenheldin/1.0.1/employees/{employeeId}'.format(employee_id=2),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -129,63 +105,88 @@ class TestDefaultController(BaseTestCase):
         Update changes to employer
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/employees/{employeeId}'.format(employee_id='employee_id_example'),
+            '/sommergis/krisenheldin/1.0.1/employees/{employeeId}'.format(employee_id=2),
             method='PUT')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_employer_employer_id_delete(self):
-        """Test case for employer_employer_id_delete
+    def test_employees_get(self):
+        """Test case for employees_get
+
+        Returns a list of employees.
+        """
+        response = self.client.open(
+            '/sommergis/krisenheldin/1.0.1/employees',
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_employees_post(self):
+        """Test case for employees_post
+
+        Creates a new employee
+        """
+        body = Employer()
+        response = self.client.open(
+            '/sommergis/krisenheldin/1.0.1/employees',
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_employers_employer_id_delete(self):
+        """Test case for employers_employer_id_delete
 
         deletes an employer profile. Admin only
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/employer/{employerId}'.format(employer_id='employer_id_example'),
+            '/sommergis/krisenheldin/1.0.1/employers/{employerId}'.format(employer_id=2),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_employer_employer_id_get(self):
-        """Test case for employer_employer_id_get
+    def test_employers_employer_id_get(self):
+        """Test case for employers_employer_id_get
 
         Returns an employer by ID.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/employer/{employerId}'.format(employer_id='employer_id_example'),
+            '/sommergis/krisenheldin/1.0.1/employers/{employerId}'.format(employer_id=2),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_employer_employer_id_put(self):
-        """Test case for employer_employer_id_put
+    def test_employers_employer_id_put(self):
+        """Test case for employers_employer_id_put
 
         Update changes to employer
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/employer/{employerId}'.format(employer_id='employer_id_example'),
+            '/sommergis/krisenheldin/1.0.1/employers/{employerId}'.format(employer_id=2),
             method='PUT')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_employer_get(self):
-        """Test case for employer_get
+    def test_employers_get(self):
+        """Test case for employers_get
 
         Returns a list of employers.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/employer',
+            '/sommergis/krisenheldin/1.0.1/employers',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_employer_post(self):
-        """Test case for employer_post
+    def test_employers_post(self):
+        """Test case for employers_post
 
         Creates a new employer
         """
         body = Employer()
         response = self.client.open(
-            '/krisenheldin/1.0.0/employer',
+            '/sommergis/krisenheldin/1.0.1/employers',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
@@ -198,7 +199,7 @@ class TestDefaultController(BaseTestCase):
         Returns a list of available jobs.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs',
+            '/sommergis/krisenheldin/1.0.1/jobs',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -209,7 +210,7 @@ class TestDefaultController(BaseTestCase):
         deletes a job
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs/{jobId}'.format(job_id='job_id_example'),
+            '/sommergis/krisenheldin/1.0.1/jobs/{jobId}'.format(job_id=2),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -220,7 +221,7 @@ class TestDefaultController(BaseTestCase):
         Returns a job.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs/{jobId}'.format(job_id='job_id_example'),
+            '/sommergis/krisenheldin/1.0.1/jobs/{jobId}'.format(job_id=2),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -231,7 +232,7 @@ class TestDefaultController(BaseTestCase):
         Returns a list of pictures for the specified job.
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs/{jobId}/pictures'.format(job_id='job_id_example'),
+            '/sommergis/krisenheldin/1.0.1/jobs/{jobId}/pictures'.format(job_id='job_id_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -242,7 +243,7 @@ class TestDefaultController(BaseTestCase):
         deletes a picture
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs/{jobId}/pictures/{pictureId}'.format(job_id='job_id_example', picture_id='picture_id_example'),
+            '/sommergis/krisenheldin/1.0.1/jobs/{jobId}/pictures/{pictureId}'.format(job_id=2, picture_id=2),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -253,7 +254,7 @@ class TestDefaultController(BaseTestCase):
         gets a picture
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs/{jobId}/pictures/{pictureId}'.format(job_id='job_id_example', picture_id='picture_id_example'),
+            '/sommergis/krisenheldin/1.0.1/jobs/{jobId}/pictures/{pictureId}'.format(job_id=2, picture_id=2),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -261,11 +262,11 @@ class TestDefaultController(BaseTestCase):
     def test_jobs_job_id_pictures_post(self):
         """Test case for jobs_job_id_pictures_post
 
-        Creates a new picture
+        Creates a new job picture
         """
         body = Picture()
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs/{jobId}/pictures',
+            '/sommergis/krisenheldin/1.0.1/jobs/{jobId}/pictures'.format(job_id='job_id_example'),
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
@@ -278,7 +279,7 @@ class TestDefaultController(BaseTestCase):
         Update changes to job
         """
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs/{jobId}'.format(job_id='job_id_example'),
+            '/sommergis/krisenheldin/1.0.1/jobs/{jobId}'.format(job_id=2),
             method='PUT')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -293,7 +294,7 @@ class TestDefaultController(BaseTestCase):
                         ('radius', 1.2),
                         ('limit', 56)]
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs_near',
+            '/sommergis/krisenheldin/1.0.1/jobs_near',
             method='GET',
             query_string=query_string)
         self.assert200(response,
@@ -306,7 +307,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = Job()
         response = self.client.open(
-            '/krisenheldin/1.0.0/jobs',
+            '/sommergis/krisenheldin/1.0.1/jobs',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
@@ -320,10 +321,46 @@ class TestDefaultController(BaseTestCase):
         """
         body = LoginCredentials()
         response = self.client.open(
-            '/krisenheldin/1.0.0/login',
+            '/sommergis/krisenheldin/1.0.1/login',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_users_get(self):
+        """Test case for users_get
+
+        Returns a list of users.
+        """
+        response = self.client.open(
+            '/sommergis/krisenheldin/1.0.1/users',
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_users_post(self):
+        """Test case for users_post
+
+        Creates a new user
+        """
+        body = User()
+        response = self.client.open(
+            '/sommergis/krisenheldin/1.0.1/users',
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_users_user_id_get(self):
+        """Test case for users_user_id_get
+
+        Returns a users by ID.
+        """
+        response = self.client.open(
+            '/sommergis/krisenheldin/1.0.1/users/{userId}'.format(user_id=2),
+            method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 

@@ -13,3 +13,4 @@ from api.models.job_application import JobApplication
 from api.models.job_location import JobLocation
 from api.models.login_credentials import LoginCredentials
 from api.models.picture import Picture
+from api.models.user import User

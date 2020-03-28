@@ -14,15 +14,19 @@ class Employee(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: str=None, first_name: str=None, last_name: str=None, street: str=None, house_number: str=None, postal_code: str=None, city: str=None, state: str=None):  # noqa: E501
+    def __init__(self, id: int=None, user_id: int=None, first_name: str=None, last_name: str=None, description: str=None, street: str=None, house_number: str=None, postal_code: str=None, city: str=None, state: str=None):  # noqa: E501
         """Employee - a model defined in Swagger
 
         :param id: The id of this Employee.  # noqa: E501
-        :type id: str
+        :type id: int
+        :param user_id: The user_id of this Employee.  # noqa: E501
+        :type user_id: int
         :param first_name: The first_name of this Employee.  # noqa: E501
         :type first_name: str
         :param last_name: The last_name of this Employee.  # noqa: E501
         :type last_name: str
+        :param description: The description of this Employee.  # noqa: E501
+        :type description: str
         :param street: The street of this Employee.  # noqa: E501
         :type street: str
         :param house_number: The house_number of this Employee.  # noqa: E501
@@ -35,9 +39,11 @@ class Employee(Model):
         :type state: str
         """
         self.swagger_types = {
-            'id': str,
+            'id': int,
+            'user_id': int,
             'first_name': str,
             'last_name': str,
+            'description': str,
             'street': str,
             'house_number': str,
             'postal_code': str,
@@ -47,8 +53,10 @@ class Employee(Model):
 
         self.attribute_map = {
             'id': 'id',
+            'user_id': 'userId',
             'first_name': 'firstName',
             'last_name': 'lastName',
+            'description': 'description',
             'street': 'street',
             'house_number': 'houseNumber',
             'postal_code': 'postalCode',
@@ -56,8 +64,10 @@ class Employee(Model):
             'state': 'state'
         }
         self._id = id
+        self._user_id = user_id
         self._first_name = first_name
         self._last_name = last_name
+        self._description = description
         self._street = street
         self._house_number = house_number
         self._postal_code = postal_code
@@ -76,25 +86,46 @@ class Employee(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self) -> str:
+    def id(self) -> int:
         """Gets the id of this Employee.
 
 
         :return: The id of this Employee.
-        :rtype: str
+        :rtype: int
         """
         return self._id
 
     @id.setter
-    def id(self, id: str):
+    def id(self, id: int):
         """Sets the id of this Employee.
 
 
         :param id: The id of this Employee.
-        :type id: str
+        :type id: int
         """
 
         self._id = id
+
+    @property
+    def user_id(self) -> int:
+        """Gets the user_id of this Employee.
+
+
+        :return: The user_id of this Employee.
+        :rtype: int
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id: int):
+        """Sets the user_id of this Employee.
+
+
+        :param user_id: The user_id of this Employee.
+        :type user_id: int
+        """
+
+        self._user_id = user_id
 
     @property
     def first_name(self) -> str:
@@ -137,6 +168,27 @@ class Employee(Model):
         """
 
         self._last_name = last_name
+
+    @property
+    def description(self) -> str:
+        """Gets the description of this Employee.
+
+
+        :return: The description of this Employee.
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description: str):
+        """Sets the description of this Employee.
+
+
+        :param description: The description of this Employee.
+        :type description: str
+        """
+
+        self._description = description
 
     @property
     def street(self) -> str:
